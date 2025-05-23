@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debouncing Throttling</title>
+    <style>
+        img {
+            height: 200px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="https://img.freepik.com/free-vector/black-pistol-white_1308-36380.jpg?ga=GA1.1.1403451065.1728019799&semt=ais_hybrid"
+        alt="gun">
+
+    <div>
+        <h2>Normal Bullet Count: <span id="nCnt">0</span></h2>
+        <h2>Debounce Bullet Count: <span id="dCnt">0</span></h2>
+        <h2>Throttle Bullet Count: <span id="tCnt">0</span></h2>
+    </div>
+
+    <script>
+        let nCount = 0;
+        let tCount = 0;
+        let dCount = 0;
+        let dTimer;
+        let fireThrottle = true;
+
+        document.querySelector("img").addEventListener('click', showEvent);
+
+        function showEvent() {
+            normalCount();
+            debounceCount();
+            throttleCount();
+        }
+
+        function normalCount() {
+            nCount++;
+            document.querySelector("#nCnt").textContent = nCount;
+        }
+
+        function debounceCount() {
+            clearTimeout(dTimer);
+            dTimer = setTimeout(() => {
+                dCount++;
+                document.querySelector("#dCnt").textContent = dCount;
+            }, 1000)
+        }
+
+        function throttleCount() {
+            if (fireThrottle) {
+                tCount++;
+                document.querySelector("#tCnt").textContent = tCount;
+                fireThrottle = false;
+                setTimeout(() => {
+                    fireThrottle = true;
+                }, 1000)
+            }
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- Debouncing and throttling are optimization techniques in JavaScript used to control the frequency of function execution in response to events like scrolling, typing, or resizing. -->
+
+<!-- Debouncing:
+Debouncing ensure that a function execute only once after a specified delay has passed since the last event trigger, resetting the timer if the event occur again within the delay. 
+It helps prevent unnecessary function executions when an event occurs repeatedly in a short time. 
+
+Example:
+Search Input Field (Auto-Suggestions) - If a user types continuously, the API request should only be sent after they stop typing for a short duration. -->
+
+
+
+<!-- Throttling:
+Throttling ensures that a function executes at most once per specified time interval, ignoring repeated event triggers within that interval.
+It limits the execution rate of a function.
+
+Example:
+Window Resize / Scroll Events - If a user is scrolling continuously, we should trigger calculations at fixed intervals instead of on every scroll event. -->
