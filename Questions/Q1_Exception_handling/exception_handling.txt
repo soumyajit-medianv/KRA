@@ -1,0 +1,10 @@
+In NestJS, exception handling ensures that unexpected behavior (EX - bad input or server error) is caught and managed instead of crashing the application.
+
+Purpose of Exception Handling
+For Developers:
+Helps to understand where and why an error happened.
+Prevents application from crashing unexpectedly.
+
+For End-users/Operators:
+Returns user-friendly error messages.
+Prevents exposing sensitive internal errors.
