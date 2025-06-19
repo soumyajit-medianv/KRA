@@ -1,0 +1,12 @@
+# Defining schema
+type Book {
+  id: ID!
+  title: String!
+  price: Int
+}
+
+#Based on this schema we have to do the query so then we define the Query
+type Query {
+  books: [Book] # books <-> Query Name -> By using this query we get all books information.
+}
+
