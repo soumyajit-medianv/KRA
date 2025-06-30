@@ -1,0 +1,39 @@
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    # "2181:2181" => The first one is the port on my local machine and the second one is the port on the docker container. It means that any traffic sent to the port 2181 on my local machine will be forwarded directly to the port 2181 inside the container where zookeeper is running. And by the way, the port 2181 is the default port number that zookeeper listens on for client connection.
+    ports:
+      - "2181:2181"
+
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+        # This is the default port of the kafka broker. This tells kafka to listen on all network interfaces or IP addresses on port 9092. Basically it means that accept incoming connection from anywhere.
+        KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+        # This is actually what kafka tells client to use when they want to connect to it. It actually means somethings like that -> Hey client in order to reach me, use localhost:9092
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+
+
+# - Run the docker container - docker compose up
+# - To see how many container running  - docker ps
+# - Run the bash command inside the kafka container - docker exec -it kafka_pubsub-kafka-1 bash 
+# 							(-it => stick to the terminal of the docker container)
+
+# - To see the list of topics inside the kafka - kafka-topics.sh --bootstrap-server localhost:9092 --list
+# 						(--bootstrap-server => It determines the address of the kafka broker that we want to connect to)
+
+# - Create a topic inside the kafka broker - kafka-topics.sh --bootstrap-server localhost:9092 --create --topic order_created --partitions 1 --replication-factor 1
+# 						(--partitions 1 => This topic have only
+# 						--replication-factor 1 => It tells kafka how many times it should replicate the data across brokers. So one replica)
+
+# - Producing messages into a kafka topic - kafka-console-producer.sh --broker-list localhost:9092 --topic order_created
+# 					  >hello kafka (This message are sent to the order_created topic immediately)
+
+# - Consume or read messages from this order_created topic - kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic order_created --from-beginning
+
+# - This is for direct see the message when producers produce a message - kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic order_created
